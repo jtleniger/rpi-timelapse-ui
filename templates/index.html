@@ -1,0 +1,54 @@
+<!doctype html>
+    <head>
+        <title>Timelapse Controller</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <form action="{{ url_for('index') }}" method="POST">
+            <div>
+                <h1>Timelapse Controller</h1>
+            </div>
+            {% if settings %}
+            <div>
+                Count: {{ settings.count }}
+                Durations: {{ settings.duration }}
+                Spacing: {{ settings.spacing }}
+            </div>
+            {% endif %}
+            <div>
+                <div>
+                    <div>
+                        <label for="exposure-count">Exposure count:</label>
+                    </div>
+                    <div>
+                        <input type="number" name="exposure-count" id="exposures">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="exposure-duration">Exposure Duration (s):</label>
+                    </div>
+                    <div>
+                        <input type="number" name="exposure-duration" id="exposures">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="exposure-spacing">Time Between Exposures (s):</label>
+                    </div>
+                    <div>
+                        <input type="number" name="exposure-spacing" id="exposures">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="submit" name="start" value="Start">
+                    </div>
+                    <div>
+                        <input type="submit" name="stop" value="Stop">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
