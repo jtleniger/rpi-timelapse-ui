@@ -9,7 +9,7 @@ def index():
     print(request.form)
 
     if request.method == 'POST':
-        settings = ExposureSettings(request.form['exposure-count'], request.form['exposure-duration'], request.form['exposure-spacing'])
+        settings = ExposureSettings(request.form)
     
     print(settings)
 

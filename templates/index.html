@@ -8,11 +8,25 @@
             <div>
                 <h1>Timelapse Controller</h1>
             </div>
+            {% if status %}
+            {% endif %}
             {% if settings %}
             <div>
-                Count: {{ settings.count }}
-                Durations: {{ settings.duration }}
-                Spacing: {{ settings.spacing }}
+                <p>Starting capture...</p>
+                <table>
+                    <tr>
+                        <td>Count</td>
+                        <td>{{ settings.count }}</td>
+                    </tr>
+                    <tr>
+                        <td>Durations</td>
+                        <td>{{ settings.duration }}</td>
+                    </tr>
+                    <tr>
+                        <td>Spacing</td>
+                        <td>{{ settings.spacing }}</td>
+                    </tr>
+                </table>
             </div>
             {% endif %}
             <div>

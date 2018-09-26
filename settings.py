@@ -1,5 +1,5 @@
 class ExposureSettings(object):
-    def __init__(self, count, duration, spacing):
-        self.count = count
-        self.duration = duration
-        self.spacing = spacing
+    def __init__(self, form):
+        self.count = form['exposure-count']
+        self.duration = form['exposure-duration']
+        self.spacing = form['exposure-spacing']
