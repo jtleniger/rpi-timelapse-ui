@@ -29,8 +29,8 @@ class TimelapseHandler(object):
 
         return exposure
 
-    def status(self):
+    def is_running(self):
         if self.proc is None or self.proc.poll() is not None:
-            return "Nothing running."
+            return False
 
-        return "Running timelapse."
+        return True
