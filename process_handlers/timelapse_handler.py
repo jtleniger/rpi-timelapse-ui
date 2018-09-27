@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import PIPE, Popen
 import logging
 
 class TimelapseHandler(object):
@@ -9,15 +9,28 @@ class TimelapseHandler(object):
         if self.proc is not None:
             raise Exception("Timelapse is already running.")
         
-        self.proc = subprocess.Popen(['python', '-m', 'tasks/timelapse.py', count, duration, spacing])
+        self.proc = Popen(['python', 'tasks/timelapse.py', count, duration, spacing], stdout=PIPE)
 
         logging.info("started timelapse.py, pid: {}".format(self.proc.pid))
 
-    def status(self):
-        if self.proc is None:
-            return "Nothing running."
-        
-        if self.proc.poll() is None:
-            return "Running timelapse."
+    def count_done(self):
+        if self.proc is None or self.proc.poll() is not None:
+            return 0
 
-        return "Nothing running."
+        exposure = 0
+
+        while True:
+            line = self.proc.stdout.readline()
+
+            if not line:
+                break
+
+            exposure = int(line)
+
+        return exposure
+
+    def status(self):
+        if self.proc is None or self.proc.poll() is not None:
+            return "Nothing running."
+            
+        return "Running timelapse.

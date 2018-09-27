@@ -13,7 +13,7 @@ def main():
 
     args = parser.parse_args()
 
-    logging.info("starting timelapse with args: {count}, {duration}, {spacing}".format(args.count, args.duration, args.spacing))
+    logging.info("starting timelapse with args: {}, {}, {}".format(args.count, args.duration, args.spacing))
 
     controller = MockTimelapseController()
 
