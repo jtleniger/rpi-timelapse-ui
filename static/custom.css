@@ -1,9 +1,9 @@
 h1, h2, h3, h4, h5, h6 {
-    color: #b71c1c;
+    color: #CC0000;
     text-align: center;
 }
 
 input.form-control, input.form-control:focus {
     background: #424242;
-    color: #b71c1c;
+    color: #CC0000;
 }
