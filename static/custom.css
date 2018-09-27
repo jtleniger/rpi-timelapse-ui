@@ -7,3 +7,8 @@ input.form-control, input.form-control:focus {
     background: #424242;
     color: #CC0000;
 }
+
+.vcenter {
+    display: flex;
+    align-items: center;
+}

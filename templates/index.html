@@ -7,18 +7,26 @@
     </head>
     <body>
         <div class="container">
-            <form action="{{ url_for('index') }}" method="POST">
-                <div class="row justify-content-center">
-                    <div class="col">
-                        <h3>Timelapse Controller</h3>
+
+            <div class="row mt-3 justify-content-center">
+                <div class="col">
+                    <h3>Timelapse Controller</h3>
+                </div>
+            </div>
+
+            <div class="row mb-4 justify-cozntent-center">
+                <div class="col">
+                    <p>Progress:</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"></div>
                     </div>
                 </div>
-                {% if status %}
-                    {{ status }}
-                {% endif %}
-                {% if settings %}
-                <div>
-                    <p>Starting capture...</p>
+            </div>
+            
+            {% if settings %}
+            <div class="row justify-content-center">
+                <div class="col">
+                    <p>Settings:</p>
                     <table>
                         <tr>
                             <td>Count</td>
@@ -34,39 +42,40 @@
                         </tr>
                     </table>
                 </div>
-                {% endif %}
-                <div>
-                    <div class="row form-group">
-                        <div class="col-7">
-                            <label for="exposure-count">Exposure count:</label>
-                        </div>
-                        <div class="col">
-                            <input class="form-control form-control-lg" type="number" name="exposure-count" id="exposures">
-                        </div>
+            </div>
+            {% endif %}
+                
+            <form action="{{ url_for('index') }}" method="POST">
+                <div class="row form-group">
+                    <div class="col-7 vcenter">
+                        <label for="exposure-count">Exposure count:</label>
                     </div>
-                    <div class="row form-group">
-                        <div class="col-7">
-                            <label for="exposure-duration">Exposure Duration (s):</label>
-                        </div>
-                        <div class="col">
-                            <input class="form-control form-control-lg" type="number" name="exposure-duration" id="exposures">
-                        </div>
+                    <div class="col vcenter">
+                        <input class="form-control form-control-lg" type="number" name="exposure-count" id="exposures">
                     </div>
-                    <div class="row form-group">
-                        <div class="col-7">
-                            <label for="exposure-spacing">Time Between Exposures (s):</label>
-                        </div>
-                        <div class="col">
-                            <input class="form-control form-control-lg" type="number" name="exposure-spacing" id="exposures">
-                        </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-7 vcenter">
+                        <label for="exposure-duration">Exposure Duration (s):</label>
                     </div>
-                    <div class="row form-group">
-                        <div class="col">      
-                            <input class="btn btn-outline-secondary" type="submit" name="stop" value="Stop">             
-                        </div>
-                        <div class="col">
-                            <input class="btn btn-outline-danger float-right" type="submit" name="start" value="Start">
-                        </div>
+                    <div class="col vcenter">
+                        <input class="form-control form-control-lg" type="number" name="exposure-duration" id="exposures">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-7 vcenter">
+                        <label for="exposure-spacing">Time Between Exposures (s):</label>
+                    </div>
+                    <div class="col vcenter">
+                        <input class="form-control form-control-lg" type="number" name="exposure-spacing" id="exposures">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col">      
+                        <input class="btn btn-outline-secondary btn-lg" type="submit" name="stop" value="Stop">             
+                    </div>
+                    <div class="col">
+                        <input class="btn btn-outline-danger btn-lg float-right" type="submit" name="start" value="Start">
                     </div>
                 </div>
             </form>

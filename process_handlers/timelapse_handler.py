@@ -32,5 +32,5 @@ class TimelapseHandler(object):
     def status(self):
         if self.proc is None or self.proc.poll() is not None:
             return "Nothing running."
-            
-        return "Running timelapse.
+
+        return "Running timelapse."
