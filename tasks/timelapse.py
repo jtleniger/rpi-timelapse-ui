@@ -5,6 +5,7 @@ import logging
 logging.basicConfig(filename='timelapse.log',level=logging.DEBUG)
 
 def main():
+    """CLI script for running timelapses."""
     parser = argparse.ArgumentParser()
 
     parser.add_argument("count", type=int, help="number of exposures to take")

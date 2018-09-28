@@ -16,58 +16,37 @@
 
             <div class="row mb-4 justify-cozntent-center">
                 <div class="col">
-                    <p>Progress:</p>
+                    <p>Progress</p>
                     <div class="progress">
                         <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated bg-danger"></div>
                     </div>
                 </div>
             </div>
-            
-            {% if settings %}
-            <div class="row justify-content-center">
-                <div class="col">
-                    <p>Settings:</p>
-                    <table>
-                        <tr>
-                            <td>Count</td>
-                            <td>{{ settings.count }}</td>
-                        </tr>
-                        <tr>
-                            <td>Durations</td>
-                            <td>{{ settings.duration }}</td>
-                        </tr>
-                        <tr>
-                            <td>Spacing</td>
-                            <td>{{ settings.spacing }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            {% endif %}
                 
             <form action="{{ url_for('index') }}" method="POST">
+                {{ form.csrf_token }}
                 <div class="row form-group">
                     <div class="col-7 vcenter">
-                        <label for="exposure-count">Exposure count:</label>
+                        {{ form.count.label }}
                     </div>
                     <div class="col vcenter">
-                        <input class="form-control form-control-lg" type="number" name="exposure-count" id="exposures">
+                        {{ form.count(class="form-control form-control-lg", min=1, value=1) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-7 vcenter">
-                        <label for="exposure-duration">Exposure Duration (s):</label>
+                        {{ form.duration.label }}
                     </div>
                     <div class="col vcenter">
-                        <input class="form-control form-control-lg" type="number" name="exposure-duration" id="exposures">
+                        {{ form.duration(class="form-control form-control-lg", min=1, value=1) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-7 vcenter">
-                        <label for="exposure-spacing">Time Between Exposures (s):</label>
+                        {{ form.spacing.label }}
                     </div>
                     <div class="col vcenter">
-                        <input class="form-control form-control-lg" type="number" name="exposure-spacing" id="exposures">
+                        {{ form.spacing(class="form-control form-control-lg", min=0, value=0) }}
                     </div>
                 </div>
                 <div class="row form-group">
