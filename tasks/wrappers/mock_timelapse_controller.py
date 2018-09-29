@@ -5,4 +5,4 @@ class MockTimelapseController(BaseTimelapseController):
     def run(self, count, duration, spacing):
         for exposure in range(count):
             time.sleep(duration + spacing)
-            print(exposure + 1)
+            self.log_progress(exposure + 1)
