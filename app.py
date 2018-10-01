@@ -1,31 +1,33 @@
 from flask import Flask, render_template, request, jsonify
-from settings import Settings
-from process_handlers.timelapse_handler import TimelapseHandler
-from forms.run_timelapse import RunTimelapseForm
+from process_handlers.sequence_handler import SequenceHandler
+from forms.run_sequence import RunSequenceForm
 
 app = Flask(__name__)
 app.secret_key = "developmentkey"
 
-timelapse_handler = TimelapseHandler()
+sequence_handler = SequenceHandler()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    """Main page. Form for triggering timelapses."""
-    global timelapse_handler
+    """Main page. Form for triggering sequences."""
+    global sequence_handler
 
-    form = RunTimelapseForm()
+    form = RunSequenceForm()
 
     if form.validate_on_submit():
-        timelapse_handler.start(form.count.data, form.duration.data, form.spacing.data)
+        if form.start.data:
+            sequence_handler.start(form.count.data, form.duration.data, form.spacing.data)
+        if form.stop.data:
+            sequence_handler.stop()
 
-    return render_template('index.html', form=form, is_running=timelapse_handler.is_running())
+    return render_template('index.html', form=form, is_running=sequence_handler.is_running())
 
 @app.route('/progress', methods=['GET'])
 def progress():
     """Returns progress percentage as whole number in JSON."""
 
-    global timelapse_handler
+    global sequence_handler
 
     print('in progress route')
 
-    return jsonify({ 'progress': timelapse_handler.progress() })
+    return jsonify({ 'progress': sequence_handler.progress() })

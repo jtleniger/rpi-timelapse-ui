@@ -1,7 +1,7 @@
 from subprocess import Popen
 import logging
 
-class TimelapseHandler(object):
+class SequenceHandler(object):
     def __init__(self):
         self.proc = None
         self.count = 0
@@ -42,3 +42,7 @@ class TimelapseHandler(object):
             return False
 
         return True
+
+    def stop(self):
+        self.proc.kill()
+        self.proc = None
