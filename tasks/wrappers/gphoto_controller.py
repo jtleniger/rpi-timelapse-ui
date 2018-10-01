@@ -1,4 +1,4 @@
-from base_controller import BaseController
+from wrappers.base_controller import BaseController
 import subprocess
 import logging
 
@@ -116,7 +116,6 @@ class GPhotoController(BaseController):
             try:
                 exit_code = subprocess.call([
                     GPhotoController.CMD,
-                    GPhotoController.CFG_FLAG,
                     '--capture-image'
                 ])
             except (ex):

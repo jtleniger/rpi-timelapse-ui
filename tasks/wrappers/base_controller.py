@@ -1,7 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-import argparse
-
 class BaseController(metaclass=ABCMeta):
     @abstractmethod
     def run(self, count, duration, spacing):

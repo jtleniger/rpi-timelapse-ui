@@ -28,6 +28,4 @@ def progress():
 
     global sequence_handler
 
-    print('in progress route')
-
     return jsonify({ 'progress': sequence_handler.progress() })

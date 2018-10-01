@@ -1,5 +1,6 @@
 from subprocess import Popen
 import logging
+import math
 
 class SequenceHandler(object):
     def __init__(self):
@@ -7,7 +8,7 @@ class SequenceHandler(object):
         self.count = 0
     
     def start(self, count, duration, spacing):
-        """Starts a new tasks/timelapse.py process if one isn't already running."""
+        """Starts a new tasks/sequence.py process if one isn't already running."""
 
         if self.proc is not None and self.proc.poll() is not None:
             self.proc = None
@@ -17,15 +18,15 @@ class SequenceHandler(object):
 
         self.count = count
         
-        self.proc = Popen(['python', 'tasks/timelapse.py', str(self.count), str(duration), str(spacing)])
+        self.proc = Popen(['python', 'tasks/sequence.py', str(self.count), str(duration), str(spacing)])
 
-        logging.info("started timelapse.py, pid: {}".format(self.proc.pid))
+        logging.info("started sequence.py, pid: {}".format(self.proc.pid))
 
     def progress(self):
-        """Returns the percent progress for the running timelapse"""
+        """Returns the percent progress for the running sequence"""
 
         if self.proc is None or self.proc.poll() is not None:
-            return 0
+            return 100
 
         f = open('progress_temp', 'r')
 
@@ -33,10 +34,10 @@ class SequenceHandler(object):
 
         f.close()
 
-        return round(((1.0 * exposure) / self.count) * 100)
+        return int(math.ceil(((1.0 * exposure) / self.count) * 100))
 
     def is_running(self):
-        """Returns true if a timelapse is running."""
+        """Returns true if a sequence is running."""
 
         if self.proc is None or self.proc.poll() is not None:
             return False
@@ -44,5 +45,6 @@ class SequenceHandler(object):
         return True
 
     def stop(self):
-        self.proc.kill()
-        self.proc = None
+        if self.proc is not None:
+            self.proc.kill()
+            self.proc = None
