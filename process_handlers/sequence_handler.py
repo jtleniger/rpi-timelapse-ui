@@ -17,7 +17,7 @@ class SequenceHandler(object):
 
         self.count = count
         
-        self.proc = Popen(['python', './tasks/sequence.py', str(self.count), str(duration), str(spacing)])
+        self.proc = Popen(['python3', './tasks/sequence.py', str(self.count), str(duration), str(spacing)])
 
     def progress(self):
         """Returns the percent progress for the running sequence"""
