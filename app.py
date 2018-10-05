@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from process_handlers.sequence_handler import SequenceHandler
 from forms.run_sequence import RunSequenceForm
+import os
 
 app = Flask(__name__)
 app.secret_key = "developmentkey"
@@ -15,10 +16,19 @@ def index():
     form = RunSequenceForm()
 
     if form.validate_on_submit():
+
         if form.start.data:
+
             sequence_handler.start(form.count.data, form.duration.data, form.spacing.data)
+
         if form.stop.data:
+
             sequence_handler.stop()
+
+        if form.shutdown.data:
+
+            os.system('systemctl poweroff')
+
 
     return render_template('index.html', form=form, is_running=sequence_handler.is_running())
 

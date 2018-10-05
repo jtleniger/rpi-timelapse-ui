@@ -25,3 +25,7 @@ htmlcov/
 venv/
 
 *.log
+
+sequence.cfg
+
+progress_temp

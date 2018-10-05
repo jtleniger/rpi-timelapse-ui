@@ -1,5 +1,4 @@
 from subprocess import Popen
-import logging
 import math
 
 class SequenceHandler(object):
@@ -18,9 +17,7 @@ class SequenceHandler(object):
 
         self.count = count
         
-        self.proc = Popen(['python', 'tasks/sequence.py', str(self.count), str(duration), str(spacing)])
-
-        logging.info("started sequence.py, pid: {}".format(self.proc.pid))
+        self.proc = Popen(['python', './tasks/sequence.py', str(self.count), str(duration), str(spacing)])
 
     def progress(self):
         """Returns the percent progress for the running sequence"""
@@ -45,6 +42,7 @@ class SequenceHandler(object):
         return True
 
     def stop(self):
+        """Stops the sequence if one is running."""
         if self.proc is not None:
             self.proc.kill()
             self.proc = None
