@@ -68,10 +68,11 @@
                 </div>
                 <div class="row form-group">
                     <div class="col">      
-                        {{ form.stop(class="btn btn-outline-secondary btn-lg") }}
+                        
                         {{ form.shutdown(class="btn btn-outline-secondary btn-lg") }}            
                     </div>
-                    <div class="col">
+                    <div class="col text-right">
+                        {{ form.stop(class="btn btn-outline-secondary btn-lg mr-1") }}
                         {{ form.start(class="btn btn-outline-danger btn-lg float-right") }}
                     </div>
                 </div>

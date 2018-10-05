@@ -1,6 +1,7 @@
 from wrappers.base_controller import BaseController
 import subprocess
 import logging
+import time
 
 class GPhotoController(BaseController):
     CMD = 'gphoto2'
@@ -96,6 +97,8 @@ class GPhotoController(BaseController):
                     logging.error("Error capturing photo. Code: {}".format(exit_code))
 
             self.log_progress(exposure)
+
+            time.sleep(spacing)
     
     def run_timed(self, count, duration, spacing):
         duration = float(duration)
@@ -125,3 +128,5 @@ class GPhotoController(BaseController):
                     logging.error("Error capturing photo. Code: {}".format(exit_code))
 
             self.log_progress(exposure)
+
+            time.sleep(spacing)
