@@ -3,6 +3,7 @@ var n2f = require('num2fraction');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var app = express();
+var debug = require('debug')('raspberry-nikon:server');
 
 var GPhoto = require('./gphoto.js');
 var SHUTTER_SPEEDS = require('./shutters.js');
@@ -16,8 +17,8 @@ app.use(express.static('dist'));
 app.post('/api/connect', async function (req, res) {
     try {
         await gphoto.connect();
-    } catch {
-        res.sendStatus(500);
+    } catch (error) {
+        res.status(500)
         return;
     }
 
@@ -25,14 +26,14 @@ app.post('/api/connect', async function (req, res) {
 });
 
 app.post('/api/interval', async function (req, res) {
-    debugger;
-
     const { count, shutterSpeed, delay } = req.body;
 
     try {
         gphoto.runInterval(count, shutterSpeed, delay);
-    } catch {
-        res.sendStatus(503);
+    } catch (error) {
+        debug(error);
+        res.status(500);
+        res.send('Could not start interval.');
         return;
     }
 

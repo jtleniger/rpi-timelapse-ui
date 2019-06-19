@@ -14,6 +14,8 @@ module.exports = class GPhoto {
     }
 
     runInterval(count, shutterSpeed, delay) {
+        console.log('running interval')
+        debugger;
         if (shutterSpeed == 52) {
             runBulb(count, shutterSpeed, delay)
         } else {
@@ -37,6 +39,7 @@ module.exports = class GPhoto {
     }
 
     async runTime(count, shutterSpeed, delay) {
+        console.log('Starting interval');
         await runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`])
 
         for(var i = 0; i < count; i++) {
@@ -47,6 +50,10 @@ module.exports = class GPhoto {
     runCommand(args) {
         return new Promise((resolve, reject) => {
             const proc = spawn(CMD, args);
+
+            proc.stdout.on('data', data => {
+                console.log(data.toString());
+            });
             
             proc.on('exit', (code) => {
                 if (code === 0) {
