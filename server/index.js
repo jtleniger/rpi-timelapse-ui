@@ -1,6 +1,7 @@
 var express = require('express');
 var n2f = require('num2fraction');
 var cors = require('cors');
+var bodyParser = require('body-parser');
 var app = express();
 
 var GPhoto = require('./gphoto.js');
@@ -8,6 +9,7 @@ var SHUTTER_SPEEDS = require('./shutters.js');
 
 var gphoto = new GPhoto();
 
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('dist'));
 
@@ -23,6 +25,8 @@ app.post('/api/connect', async function (req, res) {
 });
 
 app.post('/api/interval', async function (req, res) {
+    debugger;
+
     const { count, shutterSpeed, delay } = req.body;
 
     try {

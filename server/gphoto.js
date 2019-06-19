@@ -7,7 +7,6 @@ const CFG_FLAG = '--set-config';
 module.exports = class GPhoto {
     constructor() {
         this.busy = false;
-        this.runningCmd = null;
     }
 
     async connect() {
@@ -15,7 +14,7 @@ module.exports = class GPhoto {
     }
 
     runInterval(count, shutterSpeed, delay) {
-        if (delay > 30) {
+        if (shutterSpeed == 52) {
             runBulb(count, shutterSpeed, delay)
         } else {
             runTime(count, shutterSpeed, delay)
