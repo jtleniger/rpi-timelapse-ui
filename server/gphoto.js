@@ -15,32 +15,34 @@ module.exports = class GPhoto {
     }
 
     runInterval(count, shutterSpeed, delay) {
-        debugger;
-
-        try {
-            if (shutterSpeed === 52) {
-                this.runBulb(count, shutterSpeed, delay);
-            } else {
-                this.runTime(count, shutterSpeed, delay);
-            }
-        } catch (error) {
-            debug(error);
-            throw error;
+        if (shutterSpeed === 52) {
+            this.runBulb(count, shutterSpeed, delay);
+        } else {
+            this.runTime(count, shutterSpeed, delay);
         }
     }
 
     async runBulb(count, shutterSpeed, delay) {
-        await this.runCommand([CFG_FLAG, 'shutterspeed=52']);
+        try {
+            await this.runCommand([CFG_FLAG, 'shutterspeed=52']);
+        } catch (error) {
+            debug(error);
+            return;
+        }
 
         for (var i = 0; i < count; i++) {
-            await this.runCommand([
-                CFG_FLAG,
-                'bulb=1',
-                `--wait-event=${shutterSpeed}s`,
-                CFG_FLAG,
-                'bulb=0',
-                `--wait-event=${delay}s`
-            ]);
+            try {
+                await this.runCommand([
+                    CFG_FLAG,
+                    'bulb=1',
+                    `--wait-event=${shutterSpeed}s`,
+                    CFG_FLAG,
+                    'bulb=0',
+                    `--wait-event=${delay}s`
+                ]);
+            } catch (error) {
+                debug(error);
+            }
         }
     }
 
@@ -49,11 +51,15 @@ module.exports = class GPhoto {
             await this.runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`]);
         } catch (error) {
             debug(error);
-            throw error;
+            return;
         }
 
         for (var i = 0; i < count; i++) {
-            await this.runCommand(['--capture-image']);
+            try {
+                await this.runCommand(['--capture-image']);
+            } catch (error) {
+                debug(error);
+            }
         }
     }
 
