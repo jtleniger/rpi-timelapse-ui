@@ -39,11 +39,17 @@ export default {
   },
   methods: {
     start: function () {
-      axios.post('/api/interval', {
+      let data = {
         count: this.count,
-        shutterSpeed: this.speed.value,
         delay: this.delay
-      }).then(response => {
+      };
+
+      if (this.useBulb) {
+        data.bulbSpeed = this.bulbSpeed;
+        data.useBulb = true;
+      }
+
+      axios.post('/api/interval', data).then(response => {
 
       })
     }

@@ -35,6 +35,22 @@
         <span>RASPBERRY</span>
         <span class="font-weight-light">NIKON</span>
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon class="mt-3" @click="connect" :loading="connecting">
+        <v-badge left overlap :color="connected ? 'green' : 'red'">
+          <template v-slot:badge>
+            <v-icon
+              v-if="connected"
+              dark
+              small
+              >
+              done
+            </v-icon>
+            <span v-else>!</span>
+          </template>
+          <v-icon large color="grey">photo_camera</v-icon>
+        </v-badge>
+      </v-btn>
     </v-toolbar>
     <v-content>
       <router-view/>
@@ -43,12 +59,29 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "App",
   data() {
     return {
-      drawer: false
+      drawer: false,
+      connected: false,
+      connecting: false
     };
+  },
+  methods: {
+    connect: function () {
+      this.connecting = true;
+
+      axios.post('/api/connect').then(() => {
+        this.connected = true;
+      }).catch(()=> {
+        this.connected = false;
+      });
+
+      this.connecting = false;
+    }
   }
 };
 </script>
