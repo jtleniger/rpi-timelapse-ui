@@ -1,41 +1,41 @@
 from flask import Flask, render_template, request, jsonify
 from process_handlers.sequence_handler import SequenceHandler
-from forms.run_sequence import RunSequenceForm
 import os
 
-app = Flask(__name__)
-app.secret_key = "developmentkey"
+app = Flask(__name__,
+    static_folder = "./static",
+    template_folder = "./static")
 
 sequence_handler = SequenceHandler()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """Main page. Form for triggering sequences."""
-    global sequence_handler
+    # global sequence_handler
 
-    form = RunSequenceForm()
+    # form = RunSequenceForm()
 
-    if form.validate_on_submit():
+    # if form.validate_on_submit():
 
-        if form.start.data:
+    #     if form.start.data:
 
-            sequence_handler.start(form.count.data, form.duration.data, form.spacing.data)
+    #         sequence_handler.start(form.count.data, form.duration.data, form.spacing.data)
 
-        if form.stop.data:
+    #     if form.stop.data:
 
-            sequence_handler.stop()
+    #         sequence_handler.stop()
 
-        if form.shutdown.data:
+    #     if form.shutdown.data:
 
-            os.system('systemctl poweroff')
+    #         os.system('systemctl poweroff')
 
 
-    return render_template('index.html', form=form, is_running=sequence_handler.is_running())
+    return render_template('index.html')
 
-@app.route('/progress', methods=['GET'])
-def progress():
-    """Returns progress percentage as whole number in JSON."""
+# @app.route('/progress', methods=['GET'])
+# def progress():
+#     """Returns progress percentage as whole number in JSON."""
 
-    global sequence_handler
+#     global sequence_handler
 
-    return jsonify({ 'progress': sequence_handler.progress() })
+#     return jsonify({ 'progress': sequence_handler.progress() })
