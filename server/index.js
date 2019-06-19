@@ -14,18 +14,20 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('dist'));
 
-app.post('/api/connect', async function (req, res) {
+app.post('/api/connect', async function(req, res) {
     try {
         await gphoto.connect();
     } catch (error) {
-        res.status(500)
+        debug(error);
+        res.status(500);
+        res.send('Could not connect to camera.');
         return;
     }
 
     res.sendStatus(200);
 });
 
-app.post('/api/interval', async function (req, res) {
+app.post('/api/interval', async function(req, res) {
     const { count, shutterSpeed, delay } = req.body;
 
     try {
@@ -40,12 +42,16 @@ app.post('/api/interval', async function (req, res) {
     res.sendStatus(200);
 });
 
-app.get('/api/speeds', function (req, res) {
+app.get('/api/status', function(req, res) {
+
+});
+
+app.get('/api/speeds', function(req, res) {
     res.json(Object.entries(SHUTTER_SPEEDS)
         .map(([key, value]) => ({ text: key, value: value }))
         .sort((a, b) => a.value - b.value));
 });
 
-app.listen(3000, function () {
+app.listen(3000, function() {
     console.log('Listening on :3000...');
 });

@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const SHUTTER_SPEEDS = require('./shutters.js');
+const debug = require('debug')('raspberry-nikon:gphoto');
 
 const CMD = 'gphoto2';
 const CFG_FLAG = '--set-config';
@@ -14,36 +15,38 @@ module.exports = class GPhoto {
     }
 
     runInterval(count, shutterSpeed, delay) {
-        console.log('running interval')
-        debugger;
-        if (shutterSpeed == 52) {
-            runBulb(count, shutterSpeed, delay)
-        } else {
-            runTime(count, shutterSpeed, delay)
+        try {
+            if (shutterSpeed === 52) {
+                this.runBulb(count, shutterSpeed, delay);
+            } else {
+                this.runTime(count, shutterSpeed, delay);
+            }
+        } catch (error) {
+            debug(error);
+            throw error;
         }
     }
 
     async runBulb(count, shutterSpeed, delay) {
-        await runCommand([CFG_FLAG, 'shutterspeed=52'])
+        await this.runCommand([CFG_FLAG, 'shutterspeed=52']);
 
-        for(var i = 0; i < count; i++) {
-            await runCommand([
+        for (var i = 0; i < count; i++) {
+            await this.runCommand([
                 CFG_FLAG,
                 'bulb=1',
-                `--wait-event=${duration}s`,
+                `--wait-event=${shutterSpeed}s`,
                 CFG_FLAG,
                 'bulb=0',
-                `--wait-event=${spacing}s`
-            ])
+                `--wait-event=${delay}s`
+            ]);
         }
     }
 
     async runTime(count, shutterSpeed, delay) {
-        console.log('Starting interval');
-        await runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`])
+        await this.runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`]);
 
-        for(var i = 0; i < count; i++) {
-            await runCommand(['--capture-image'])
+        for (var i = 0; i < count; i++) {
+            await this.runCommand(['--capture-image']);
         }
     }
 
@@ -54,14 +57,14 @@ module.exports = class GPhoto {
             proc.stdout.on('data', data => {
                 console.log(data.toString());
             });
-            
+
             proc.on('exit', (code) => {
                 if (code === 0) {
                     resolve();
                 } else {
-                    reject();
+                    reject(new Error('gphoto exited with non-zero exit code.'));
                 }
             });
-        })
+        });
     }
-}
+};
