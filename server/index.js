@@ -11,12 +11,24 @@ var gphoto = new GPhoto();
 app.use(cors());
 app.use(express.static('dist'));
 
-app.get('/api/connect', async function (req, res) {
+app.post('/api/connect', async function (req, res) {
     try {
         await gphoto.connect();
-    }
-    catch {
+    } catch {
         res.sendStatus(500);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
+app.post('/api/interval', async function (req, res) {
+    const { count, shutterSpeed, delay } = req.body;
+
+    try {
+        gphoto.runInterval(count, shutterSpeed, delay);
+    } catch {
+        res.sendStatus(503);
         return;
     }
 

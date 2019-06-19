@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+const SHUTTER_SPEEDS = require('./shutters.js');
 
 const CMD = 'gphoto2';
 const CFG_FLAG = '--set-config';
@@ -9,15 +10,46 @@ module.exports = class GPhoto {
         this.runningCmd = null;
     }
 
-    connect() {
-        return new Promise((resolve, reject) => {
-            const childProc = spawn(CMD, [CFG_FLAG, 'capturetarget=1']);
+    async connect() {
+        await this.runCommand([CFG_FLAG, 'capturetarget=1']);
+    }
 
-            childProc.stdout.on('data', data => {
-                console.log(data.toString());
-            });
+    runInterval(count, shutterSpeed, delay) {
+        if (delay > 30) {
+            runBulb(count, shutterSpeed, delay)
+        } else {
+            runTime(count, shutterSpeed, delay)
+        }
+    }
+
+    async runBulb(count, shutterSpeed, delay) {
+        await runCommand([CFG_FLAG, 'shutterspeed=52'])
+
+        for(var i = 0; i < count; i++) {
+            await runCommand([
+                CFG_FLAG,
+                'bulb=1',
+                `--wait-event=${duration}s`,
+                CFG_FLAG,
+                'bulb=0',
+                `--wait-event=${spacing}s`
+            ])
+        }
+    }
+
+    async runTime(count, shutterSpeed, delay) {
+        await runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`])
+
+        for(var i = 0; i < count; i++) {
+            await runCommand(['--capture-image'])
+        }
+    }
+
+    runCommand(args) {
+        return new Promise((resolve, reject) => {
+            const proc = spawn(CMD, args);
             
-            childProc.on('exit', (code) => {
+            proc.on('exit', (code) => {
                 if (code === 0) {
                     resolve();
                 } else {
@@ -25,9 +57,5 @@ module.exports = class GPhoto {
                 }
             });
         })
-    }
-
-    runInterval(count, shutterSpeed, delay) {
-        
     }
 }
