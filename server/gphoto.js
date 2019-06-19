@@ -15,6 +15,8 @@ module.exports = class GPhoto {
     }
 
     runInterval(count, shutterSpeed, delay) {
+        debugger;
+
         try {
             if (shutterSpeed === 52) {
                 this.runBulb(count, shutterSpeed, delay);
@@ -43,7 +45,12 @@ module.exports = class GPhoto {
     }
 
     async runTime(count, shutterSpeed, delay) {
-        await this.runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`]);
+        try {
+            await this.runCommand([CFG_FLAG, `shutterspeed=${SHUTTER_SPEEDS[shutterSpeed]}`]);
+        } catch (error) {
+            debug(error);
+            throw error;
+        }
 
         for (var i = 0; i < count; i++) {
             await this.runCommand(['--capture-image']);
