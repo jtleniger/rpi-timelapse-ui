@@ -27,15 +27,12 @@ app.post('/api/connect', async function(req, res) {
 });
 
 app.post('/api/interval', async function(req, res) {
-    const { count, shutterSpeed, delay } = req.body;
-
-    try {
-        gphoto.runInterval(count, shutterSpeed, delay);
-    } catch (error) {
-        debug(error);
-        res.status(500);
-        res.send('Could not start interval.');
-        return;
+    const { count, speed, delay, useBulb } = req.body;
+    
+    if (useBulb) {
+        gphoto.runBulb(count, speed, delay);
+    } else {
+        gphoto.runTime(count, speed, delay);
     }
 
     res.sendStatus(200);
@@ -47,7 +44,7 @@ app.get('/api/status', function(req, res) {
 
 app.get('/api/speeds', function(req, res) {
     res.json(Object.entries(SHUTTER_SPEEDS)
-        .map(([key, value]) => ({ text: key, value: value }))
+        .map(([key, value]) => ({ text: value, value: key }))
         .sort((a, b) => a.value - b.value));
 });
 

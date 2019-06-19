@@ -14,14 +14,6 @@ module.exports = class GPhoto {
         await this.runCommand([CFG_FLAG, 'capturetarget=1']);
     }
 
-    runInterval(count, shutterSpeed, delay) {
-        if (shutterSpeed === 52) {
-            this.runBulb(count, shutterSpeed, delay);
-        } else {
-            this.runTime(count, shutterSpeed, delay);
-        }
-    }
-
     async runBulb(count, shutterSpeed, delay) {
         try {
             await this.runCommand([CFG_FLAG, 'shutterspeed=52']);
@@ -56,10 +48,12 @@ module.exports = class GPhoto {
 
         for (var i = 0; i < count; i++) {
             try {
-                await this.runCommand(['--capture-image']);
+                await this.runCommand(['--trigger-capture']);
             } catch (error) {
                 debug(error);
             }
+
+            await this.sleep(delay);
         }
     }
 
@@ -78,6 +72,12 @@ module.exports = class GPhoto {
                     reject(new Error('gphoto exited with non-zero exit code.'));
                 }
             });
+        });
+    }
+
+    sleep(s) {
+        return new Promise(resolve => {
+            setTimeout(resolve, 1000 * s);
         });
     }
 };

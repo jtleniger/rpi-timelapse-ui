@@ -41,13 +41,10 @@ export default {
     start: function () {
       let data = {
         count: this.count,
-        delay: this.delay
+        delay: this.delay,
+        useBulb: this.useBulb,
+        speed: this.useBulb ? this.bulbSpeed : this.speed
       };
-
-      if (this.useBulb) {
-        data.bulbSpeed = this.bulbSpeed;
-        data.useBulb = true;
-      }
 
       axios.post('/api/interval', data).then(response => {
 
