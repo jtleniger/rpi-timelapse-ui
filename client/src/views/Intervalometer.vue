@@ -3,7 +3,7 @@
     <v-layout justify-center align-center>
       <v-flex>
         <v-text-field label="Exposures" type="number" v-model="count" min="1"></v-text-field>
-        <v-select :items="items" label="Shutter Speed" v-model="shutterSpeed"></v-select>
+        <v-select :items="speeds" label="Shutter Speed" v-model="speed"></v-select>
         <v-text-field label="Delay" type="number" v-model="delay" min="0"></v-text-field>
         <v-btn color="success">Start</v-btn>
         <v-btn color="error">Stop</v-btn>
@@ -13,14 +13,26 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data: function() {
     return {
       count: 1,
-      shutterSpeed: "foo",
+      speed: null,
       delay: 0,
-      items: ["foo", "bar"]
+      speeds: null
     };
+  },
+  mounted () {
+    axios.get('/api/speeds')
+      .then(response =>{
+        this.speeds = response.data;
+        this.speed = this.speeds[0];
+      })
+      .catch(error => {
+
+      });
   }
 };
 </script>
